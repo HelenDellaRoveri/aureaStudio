@@ -10,6 +10,19 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS services (
+  id VARCHAR(40) PRIMARY KEY DEFAULT ('s-' || replace(gen_random_uuid()::text, '-', '')),
+  name VARCHAR(160) NOT NULL,
+  category VARCHAR(80) NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  duration_minutes INTEGER NOT NULL CHECK (duration_minutes BETWEEN 15 AND 720),
+  price_cents INTEGER NOT NULL CHECK (price_cents >= 0),
+  icon VARCHAR(40) NOT NULL DEFAULT 'Sparkles',
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS professionals (
   id VARCHAR(40) PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
@@ -55,6 +68,16 @@ CREATE TABLE IF NOT EXISTS schedule_blocks (
   CHECK (whole_day OR (start_time IS NOT NULL AND end_time IS NOT NULL AND start_time < end_time))
 );
 
+CREATE TABLE IF NOT EXISTS business_hours (
+  day_of_week INTEGER PRIMARY KEY CHECK (day_of_week BETWEEN 1 AND 6),
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  start_time TIME NOT NULL DEFAULT '09:00',
+  end_time TIME NOT NULL DEFAULT '19:00',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CHECK (start_time < end_time)
+);
+
 CREATE INDEX IF NOT EXISTS appointments_client_idx ON appointments(client_id, appointment_date, start_time);
 CREATE INDEX IF NOT EXISTS appointments_professional_idx ON appointments(professional_id, appointment_date, start_time);
 CREATE INDEX IF NOT EXISTS schedule_blocks_date_idx ON schedule_blocks(block_date, professional_id);
+CREATE INDEX IF NOT EXISTS services_active_category_idx ON services(active, category, name);

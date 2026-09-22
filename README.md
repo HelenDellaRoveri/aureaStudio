@@ -1,6 +1,6 @@
 # Áurea Studio
 
-Sistema full stack de agendamento para salão de beleza, com interface do cliente, acesso de profissionais e painel administrativo.
+Sistema full stack de agendamento para salão de beleza, com interface do cliente, acesso de profissionais e painel administrativo. O frontend usa React + Vite; o backend usa Express; usuários, serviços, profissionais, horários e agendamentos ficam no Neon PostgreSQL.
 
 ## Configuração no Windows
 
@@ -26,6 +26,12 @@ No Prompt de Comando:
 copy .env.example .env
 ```
 
+No PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
 Abra o `.env` e informe sua conexão:
 
 ```env
@@ -38,11 +44,13 @@ NODE_ENV=development
 
 Nunca envie o arquivo `.env` para o GitHub.
 
-### 3. Prepare o banco e as contas de teste
+### 3. Prepare o banco e as contas iniciais
 
 ```bash
 npm run db:setup
 npm run db:seed
+npm run db:seed-dados
+
 ```
 
 ### 4. Inicie frontend e backend
@@ -53,13 +61,13 @@ npm run dev
 
 Abra `http://localhost:5173`. O frontend encaminha `/api` para o backend em `http://localhost:3001`.
 
-## Acessos demonstrativos
+## Acessos iniciais
 
-| Perfil | E-mail | Senha |
-|--------|--------|-------|
-| Salão / administradora | `admin@aureastudio.com.br` | `Aurea@2026` |
-| Cabeleireira | `ana@aureastudio.com.br` | `Profissional@2026` |
-| Cliente | `cliente@aureastudio.com.br` | `Cliente@2026` |
+| Perfil                 | E-mail                       | Senha               |
+| ---------------------- | ---------------------------- | ------------------- |
+| Salão / administradora | `admin@aureastudio.com.br`   | `Aurea@2026`        |
+| Cabeleireira           | `ana@aureastudio.com.br`     | `Profissional@2026` |
+| Cliente                | `cliente@aureastudio.com.br` | `Cliente@2026`      |
 
 Altere ou remova essas credenciais antes de colocar o sistema em produção. Novos cadastros feitos pela interface são sempre do tipo cliente.
 
@@ -71,11 +79,18 @@ Altere ou remova essas credenciais antes de colocar o sistema em produção. Nov
 - Cadastro exclusivo para clientes.
 - Sessão em cookie HTTP-only e senhas protegidas com bcrypt.
 - Agendamentos e cancelamentos persistidos no Neon PostgreSQL.
+- Reagendamento atualiza o mesmo registro, sem duplicar o horário.
 - Verificação de conflito de horários no backend.
+- Datas de agendamento e bloqueio limitadas entre hoje e 31 de dezembro do ano atual, com validação no navegador e no backend.
 - Painel completo para o salão e painel reduzido para a profissional.
 - Cadastro de profissionais com criação automática do acesso de cabeleireira.
+- Cadastro, listagem e ativação de serviços persistidos no Neon PostgreSQL.
+- Previsão financeira separada por acesso: o salão visualiza somente sua parcela de 40% e cada profissional visualiza somente os 60% dos próprios atendimentos.
+- Edição do perfil profissional, incluindo especialidade, descrição, expediente, dias, serviços e situação ativa/inativa.
 - Agenda navegável por semana, com retorno rápido para a semana atual.
 - Bloqueios de dia inteiro ou por intervalo, para todo o salão ou por profissional.
+- Dias e horários de funcionamento persistidos no Neon e respeitados no agendamento.
+- Catálogo, equipe, clientes e agenda iniciam vazios; somente os três acessos acima são criados.
 - Layout responsivo para computador e celular.
 
 ## Atualização do banco
@@ -87,7 +102,7 @@ npm run db:setup
 npm run db:seed
 ```
 
-O primeiro comando cria as novas tabelas sem apagar usuários ou agendamentos existentes. O segundo cadastra ou atualiza apenas os dados demonstrativos.
+O primeiro comando cria as novas tabelas sem apagar usuários ou agendamentos existentes. O segundo remove apenas os antigos perfis demonstrativos e cadastra ou atualiza os três acessos iniciais.
 
 ## Comandos úteis
 
@@ -98,7 +113,9 @@ npm run dev:backend     # somente API
 npm run build           # build de produção
 npm start               # serve API e dist em produção
 npm run db:setup        # cria tabelas e índices
-npm run db:seed         # cria/atualiza contas demonstrativas
+npm run db:seed         # limpa demos antigos e cria/atualiza os 3 acessos
+npm run db:seed-dados   # cria dados fictícios
+
 ```
 
-Os nomes, preços, avaliações e demais dados de catálogo são demonstrativos e podem ser editados em `lib/data.ts`.
+Depois do primeiro acesso como salão, cadastre profissionais e serviços e ative os dias de funcionamento em **Configurações**.
