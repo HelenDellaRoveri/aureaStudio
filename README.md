@@ -66,8 +66,8 @@ Abra `http://localhost:5173`. O frontend encaminha `/api` para o backend em `htt
 | Perfil                 | E-mail                       | Senha               |
 | ---------------------- | ---------------------------- | ------------------- |
 | Salão / administradora | `admin@aureastudio.com.br`   | `Aurea@2026`        |
-| Cabeleireira           | `ana@aureastudio.com.br`     | `Profissional@2026` |
-| Cliente                | `cliente@aureastudio.com.br` | `Cliente@2026`      |
+| Cabeleireiro           | `prof-rafael-costa`          | `Profissional@2026` |
+| Cliente                | `cliente45@aureastudio.com.br` | `Cliente@2026`      |
 
 Altere ou remova essas credenciais antes de colocar o sistema em produção. Novos cadastros feitos pela interface são sempre do tipo cliente.
 
