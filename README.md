@@ -49,7 +49,7 @@ Nunca envie o arquivo `.env` para o GitHub.
 ```bash
 npm run db:setup
 npm run db:seed
-npm run db:seed-dados
+node server/seed-dados.js
 
 ```
 
@@ -107,14 +107,14 @@ O primeiro comando cria as novas tabelas sem apagar usuários ou agendamentos ex
 ## Comandos úteis
 
 ```bash
-npm run dev             # frontend e backend juntos
-npm run dev:frontend    # somente Vite
-npm run dev:backend     # somente API
-npm run build           # build de produção
-npm start               # serve API e dist em produção
-npm run db:setup        # cria tabelas e índices
-npm run db:seed         # limpa demos antigos e cria/atualiza os 3 acessos
-npm run db:seed-dados   # cria dados fictícios
+npm run dev               # frontend e backend juntos
+npm run dev:frontend      # somente Vite
+npm run dev:backend       # somente API
+npm run build             # build de produção
+npm start                 # serve API e dist em produção
+npm run db:setup          # cria tabelas e índices
+npm run db:seed           # limpa demos antigos e cria/atualiza os 3 acessos
+node server/seed-dados.js # cria dados fictícios
 
 ```
 
